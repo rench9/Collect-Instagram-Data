@@ -1,0 +1,76 @@
+{% load staticfiles %}
+<div class="sidebar" data-color="purple" data-image="{% static 'dashboard/img/sidebar-5.jpg' %}">
+
+    <!--
+
+        Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
+        Tip 2: you can also add an image using data-image tag
+
+    -->
+
+    <div class="sidebar-wrapper">
+        <div class="logo">
+            <a href="/" class="simple-text">
+                Web App
+            </a>
+        </div>
+
+        <ul class="nav">
+            <li {% ifequal title "Dashboard" %}class="active"{% endifequal %}>
+                <a href="/">
+                    <i class="pe-7s-graph"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li {% ifequal title "Profiles" %}class="active"{% endifequal %}>
+                <a href="profiles">
+                    <i class="pe-7s-users"></i>
+                    <p>Profiles</p>
+                </a>
+            </li>
+            <li {% ifequal title "Search" %}class="active"{% endifequal %}>
+                <a href="search">
+                    <i class="pe-7s-search"></i>
+                    <p>Search</p>
+                </a>
+            </li>
+            <li {% ifequal title "Calculations" %}class="active"{% endifequal %}>
+                <a href="calculation">
+                    <i class="pe-7s-science"></i>
+                    <p>Calculation</p>
+                </a>
+            </li>
+            <li {% ifequal title "Import/Export" %}class="active"{% endifequal %}>
+                <a href="importexport">
+                    <i class="pe-7s-user"></i>
+                    <p>Import/Export</p>
+                </a>
+            </li>
+            <li {% ifequal title "Scrapping" %}class="active"{% endifequal %}>
+                <a href="scrapping">
+                    <i class="pe-7s-note2"></i>
+                    <p>Scrapping</p>
+                </a>
+            </li>
+            <li {% ifequal title "Schedule" %}class="active"{% endifequal %}>
+                <a href="schedule">
+                    <i class="pe-7s-clock"></i>
+                    <p>Schedule Tasks</p>
+                </a>
+            </li>
+            <li {% ifequal title "Notifications" %}class="active"{% endifequal %}>
+                <a href="notifications">
+                    <i class="pe-7s-bell"></i>
+                    <p>Notifications</p>
+                </a>
+            </li>
+            <li class="active-pro">
+                <a href="/account">
+                    <i class="pe-7s-users"></i>
+                    <p>Instagram Account</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+

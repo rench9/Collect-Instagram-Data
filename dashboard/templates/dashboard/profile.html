@@ -1,0 +1,575 @@
+{% extends 'dashboard/header.html' %}
+
+
+{% block content %}
+    <div class="main-panel">
+        {% include 'dashboard/sub_header.html' %}
+
+
+        <div class="content">
+
+
+            <div class="container-fluid">
+                <div class="row">
+                    {% csrf_token %}
+                    <a href=""><h6 rel="tooltip" title="Last updated" id="date"
+                                   style="position: absolute;right: 32px;top: 72px;"><i
+                            class="fa fa-calendar"></i>
+                        {{ data.timestamp |date:'Y-m-d' }}</h6></a>
+                    <div class="col-md-4 col-xs-4">
+                        <div id="image-container">
+                            <img class="img-circle"
+                                 src="{{ data.profilepicture }}">
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-xs-8">
+                        <h3><span id="user-name">{{ data.username }}</span> {% if data.is_verified %}
+                            <i title="Verified" style="color: #3897f0;font-size: 20px;"
+                               class="fa fa-check-circle"></i>{% endif %}
+                            {% if data.is_business %}
+                                <i title="Business" style="color: #7a3838;font-size: 20px;"
+                                   class="fa fa-briefcase"></i>{% endif %}<br>
+                            <small id="full-name">{{ data.fullname }}</small>
+                        </h3>
+                        <ul class="list-inline">
+                            <li><span id="post">{{ data.media_count }}</span> posts</li>
+                            <li><span id="followers">{{ data.followed_by }}</span> followers</li>
+                            <li><span id="following">{{ data.follows }}</span> following</li>
+                        </ul>
+                        <p><span id="bio">{{ data.bio }}</span>{% if data.website %}
+                            <a id="web-url" target="_blank" href="{{ data.website }}">{{ data.website }}</a>{% endif %}
+                            {% if data.email %}
+                                <a id="email" href="mailto:{{ data.email }}">{{ data.email }}</a>{% endif %}</p>
+                        <ul class="list-inline">
+                            <li>
+                                <button id="add-list" class="btn btn-sm btn-info btn-fill btn-cta">Add to list</button>
+                            </li>
+                            <li>
+                                <button id="del-list" class="btn btn-sm btn-info btn-fill btn-cta">Delete from list
+                                </button>
+                            </li>
+                            <li>
+                                <button id="new-list" class="btn btn-sm btn-info btn-fill btn-cta">Create new list
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Hash tags</h4>
+                                <p class="category">Recent hashtags</p>
+                            </div>
+                            <div class="content" style="line-height: 30px">
+
+                                {% for h in hashes %}
+                                    <span class="hashtag tag">{{ h.hashtag }}</span>
+                                {% endfor %}
+                                <div class="hidden footer">
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-clock-o"></i> Campaign sent 2 days ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="db-card card">
+                            <h3 id="c_usersinfo">{{ count.likes }} / {{ count.posts }}</h3>
+                            <label>Total Likes / #Posts</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="db-card card">
+                            <h3 id="c_usersinfo">{{ count.likes }} / {{ data.followed_by }}</h3>
+                            <label>Total Likes / Followers</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="db-card card">
+                            <h3 id="c_usersinfo">{{ count.comments }} / {{ count.posts }}</h3>
+                            <label>Total Comments / #Post</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="db-card card">
+                            <h3 id="c_usersinfo">{{ count.comments }} / {{ data.followed_by }}</h3>
+                            <label>Total Comments / Followers</label>
+                        </div>
+                    </div>
+                    <div class=" hidden col-md-12 col-xs-12">
+                        <h5>{{ count.likes }} / {{ count.posts }}<br>
+                            <small>Total Likes / #Posts</small>
+                        </h5>
+                        <h5><br>
+                            <small>Total Likes / Followers</small>
+                        </h5>
+                        <h5><br>
+                            <small>Total Comments / #Post</small>
+                        </h5>
+                        <h5>{{ count.likes }} / {{ data.followed_by }}<br>
+                            <small>Total Comments / Followers</small>
+                        </h5>
+                        <h5></h5>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 post-card">
+                        <canvas id="fChart"></canvas>
+                    </div>
+                    <div class="col-md-6 col-sm-12 post-card">
+                        <canvas id="lChart"></canvas>
+                    </div>
+                    <div class="col-md-6 col-sm-12 post-card">
+                        <canvas id="cChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="post-container row">
+
+
+                    {% for p in post %}
+                        <div class="col-md-4 col-xs-4 post-card">
+                            <div style="position: absolute;background-color: #00000055; height: 30%; width: 100%; bottom: 2%; color: #FFFFFF"
+                                 class="post-data">
+                                {% if p.tags.strip %}
+                                    <span style="padding: 10px"><i class="fa fa-hashtag"
+                                                                   aria-hidden="true"></i>&nbsp;{{ p.tags }}</span><br>
+                                {% endif %}
+
+
+
+                                <span style="padding: 10px"><i class="fa fa-heart"
+                                                               aria-hidden="true"></i>&nbsp;{{ p.likes }}</span><br>
+                                <span style="padding: 10px"><i class="fa fa-comments"
+                                                               aria-hidden="true"></i>&nbsp;{{ p.comments_count }}</span><br>
+
+                            </div>
+
+                            <img class="img-responsive"
+                                 src="{{ p.postpicture }}">
+                        </div>
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        {% include 'dashboard/sub_footer.html' %}
+
+    </div>
+
+    <!-- Modal -->
+
+    {#    <div class="modal fade" id="modalstats" role="dialog">#}
+    {#        <div class="modal-dialog modal-md">#}
+    {#            <div class="card modal-content">#}
+    {#                <div class="modal-header">#}
+    {#                    <button type="button" class="close" data-dismiss="modal">&times;</button>#}
+    {#                    <h4 class="modal-title">{{ data.fullname }}</h4>#}
+    {#                    <div class="dropdown">#}
+    {#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+    {#                            <p>#}
+    {#                                Range#}
+    {#                                <b class="caret"></b>#}
+    {#                            </p>#}
+    {#                        </a>#}
+    {#                        <ul class="dropdown-menu">#}
+    {#                            <li><a class="duration" data-duration="7">7 Days</a></li>#}
+    {#                            <li><a class="duration" data-duration="14">14 Daya</a></li>#}
+    {#                            <li><a class="duration" data-duration="21">21 Days</a></li>#}
+    {#                            <li><a class="duration" data-duration="28">28 Days</a></li>#}
+    {#                            <li class="divider"></li>#}
+    {#                            <li><a class="duration" data-duration="9999999">Whole</a></li>#}
+    {#                        </ul>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="modal-body" style="padding: 0px;padding-bottom: 10px;">#}
+    {#                    <div class="content" style="padding-left: 0px;padding-right: 0px;">#}
+    {#                        <div class="container-fluid" style="padding-right: 0px;padding-left: 0px;">#}
+    {#                            <div class="row">#}
+    {#                                <div class="col-md-12">#}
+    {#                                    <canvas id="fChart"></canvas>#}
+    {#                                </div>#}
+    {##}
+    {#                            </div>#}
+    {#                            <div class="row">#}
+    {#                                <div class="col-md-12">#}
+    {#                                    <canvas id="lChart"></canvas>#}
+    {#                                </div>#}
+    {##}
+    {#                            </div>#}
+    {#                            <div class="row">#}
+    {#                                <div class="col-md-12">#}
+    {#                                    <canvas id="cChart"></canvas>#}
+    {#                                </div>#}
+    {##}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <!--         <div class="modal-footer">#}
+    {#                            <button type="button" class="btn btn-info btn-fill pull-right" data-dismiss="modal">Close</button>#}
+    {#                        </div> -->#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    <div class="modal fade" id="loadList" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="card modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">List Name</h4>
+                </div>
+                <div class="modal-body" style="padding-right: 0px;padding-left: 0px;">
+                    <div class="content">
+                        <div class="container-fluid" style="padding-right: 0px;padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive table-full-width">
+                                        <table class="table table-hover table-striped" style="margin-bottom: 20px">
+                                            <thead>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Profiles</th>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info btn-fill pull-right" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cre-list" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="card modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">List Name</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form>
+                                        <div class="form-group">
+                                            <label>Only Alphabets and Numbers</label>
+                                            <input id="list-input" type="text" class="form-control"
+                                                   placeholder="list_name">
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="create-list" type="button" class="btn btn-info btn-fill pull-right"
+                            data-dismiss="modal">Create
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="application/javascript">
+
+
+
+        $(document).on('click', '#add-list', function (e) {
+            e.preventDefault();
+            list.load_saveList()
+            $('#loadList').modal();
+        });
+
+        $(document).on('click', '#del-list', function (e) {
+            e.preventDefault();
+
+            list.load_delList('{{ data.username }}')
+            $('#loadList').modal();
+            {#            list.delete($(e.toElement).data('name'), '{{ data.username }}');#}
+        });
+
+        $(document).on('click', '#new-list', function (e) {
+            e.preventDefault();
+            $('#cre-list').modal();
+        });
+
+        $(document).on('click', '.list-add', function (e) {
+            e.preventDefault();
+            list.save($(e.toElement).data('name'), '{{ data.username }}');
+            $('#loadList').modal('hide');
+        });
+
+        $(document).on('click', '.list-del', function (e) {
+            e.preventDefault();
+            list.delete($(e.toElement).data('name'), '{{ data.username }}');
+            $('#loadList').modal('hide');
+        });
+
+        $(document).on('click', '#create-list', function (e) {
+            var name = $('#list-input').val();
+            list.create(name)
+        });
+
+        $(document).on('click', '#stats', function (e) {
+            e.preventDefault();
+            profile.loadStat({{ data.id }}, 100000);
+        });
+
+        $(document).on('click', '.duration', function (e) {
+            e.preventDefault();
+            profile.loadStat({{ data.id }}, $(e.toElement).data('duration'));
+        });
+
+        $(document).ready(function () {
+            $(".post-data").width($('.post-container .post-card').width());
+
+            $('i[title]').tooltip()
+            $('.post-container .post-card').height($('.post-container .post-card').width());
+            $(window).resize(function () {
+                $('.post-container .post-card').height($('.post-container .post-card').width());
+                $(".post-data").width($('.post-container .post-card').width());
+            });
+            profile.loadStat({{ data.id }}, 100000);
+        });
+
+        //chart
+        data = JSON.parse('{"data": []}');
+        _label = []
+        _f = []
+        _l = []
+        _c = []
+
+
+        data['data'].forEach(function (d) {
+            date = new Date(d['timestamp']);
+            _label.push($.datepicker.formatDate("dd-M-y", date));
+            _f.push(d['followed_by']);
+            _l.push(d['likes_count']);
+            _c.push(d['comments_count']);
+
+        });
+        var getMax = function (_array) {
+
+            num = Math.max.apply(Math, _array);
+            if (num.toString().length > 2) {
+                ceil = Math.floor(num / (Math.pow(10, (num.toString().length - 2 )))) + 1
+                return ceil * (Math.pow(10, (num.toString().length - 2 )));
+            }
+            else {
+
+                return (Math.floor(num / 10) + 1) * 10
+            }
+        };
+
+        var getMin = function (_array) {
+
+            num = Math.min.apply(Math, _array);
+            if (num.toString().length > 2) {
+                ceil = Math.floor(num / Math.pow(10, (num.toString().length - 2 ))) - 1
+                return ceil * Math.pow((10, (num.toString().length - 2 )));
+            }
+            else {
+                if (num < 10)
+                    return (Math.floor(num / 10)) * 10
+                else
+                    return (Math.floor(num / 10) - 1) * 10
+            }
+        }
+
+
+        var ctx1 = document.getElementById("fChart").getContext('2d');
+        var ctx2 = document.getElementById("lChart").getContext('2d')
+        var ctx3 = document.getElementById("cChart").getContext('2d')
+        var fData = {
+            labels: _label,
+            datasets: [{
+                label: "Followers",
+                backgroundColor: '#ff6384',
+                borderColor: '#ff6384',
+                data: _f,
+                fill: false,
+            }]
+        };
+        var lData = {
+            labels: _label,
+            datasets: [{
+                label: "Likes",
+                fill: false,
+                backgroundColor: '#36a2eb',
+                borderColor: '#36a2eb',
+                data: _l,
+            }]
+        };
+        var cData = {
+            labels: _label,
+            datasets: [{
+                label: "Comments",
+                fill: false,
+                backgroundColor: '#ffcd56',
+                borderColor: '#ffcd56',
+                data: _c,
+            }]
+        };
+        var fOptions = {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Followers'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    },
+                    ticks: {
+                        min: getMin(_f),
+                        max: getMax(_f),
+
+                        // forces step size to be 5 units
+                        stepSize: (getMax(_f) - getMin(_f) ) / 10
+                    }
+                }]
+            }
+        };
+        var lOptions = {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Likes'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    },
+                    ticks: {
+                        min: getMin(_l),
+                        max: getMax(_l),
+
+                        // forces step size to be 5 units
+                        stepSize: (getMax(_l) - getMin(_l)) / 10
+                    }
+                }]
+            }
+        };
+        var cOptions = {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Comments'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    },
+                    ticks: {
+                        min: getMin(_c),
+                        max: getMax(_c),
+
+                        // forces step size to be 5 units
+                        stepSize: (getMax(_c) - getMin(_c)) / 8
+                    }
+                }]
+            }
+        };
+        window.fChart = new Chart(ctx1, {
+            type: 'line',
+            data: fData,
+            options: fOptions
+        });
+        window.lChart = new Chart(ctx2, {
+            type: 'line',
+            data: lData,
+            options: lOptions
+        });
+        window.cChart = new Chart(ctx3, {
+            type: 'line',
+            data: cData,
+            options: cOptions
+        });
+
+
+    </script>
+
+{% endblock %}

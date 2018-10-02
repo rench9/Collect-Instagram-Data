@@ -1,0 +1,8 @@
+setuptools
+django>=1.11,<2.0
+gunicorn>=19.7.1
+pytz
+mysqlclient
+requests>=2.18.4
+requests-toolbelt>=0.8.0
+schedule>=0.4.3

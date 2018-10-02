@@ -1,0 +1,804 @@
+{% extends 'dashboard/header.html' %}
+
+
+{% block content %}
+    <div class="main-panel">
+        {% include 'dashboard/sub_header.html' %}
+
+
+        <div class="content">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Filters</h4>
+                                <div style="position: absolute;
+top: 10px;right: 30px;" class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <p>
+                                            <span id="list-name">Select List</span>
+                                            <b class="caret"></b>
+                                        </p>
+                                    </a>
+                                    <ul class="dropdown-menu" id="filter-lists">
+                                        <li><a href="#">Something</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="#">Whole</a></li>
+                                    </ul>
+                                    <input class="hidden" type="text" id="list" value="_all"/>
+                                </div>
+                            </div>
+                            <div id="filters" class="content">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="header">
+                                            <h4 class="title">
+                                                <small>Sort By</small>
+                                            </h4>
+                                        </div>
+                                        <div id="filter-sort">
+
+                                            <div class="radio"><input checked="checked"
+                                                                      type="radio"
+                                                                      name="filter-sort"
+                                                                      value="sort1"
+                                                                      data-toggle="radio">
+                                                <b>Username</b>
+                                            </div>
+                                            <div class="radio"><input type="radio"
+                                                                      name="filter-sort"
+                                                                      value="sort2"
+                                                                      data-toggle="radio">
+                                                <b>Last Active</b>
+                                            </div>
+                                            <div class="radio"><input type="radio"
+                                                                      name="filter-sort"
+                                                                      value="sort3"
+                                                                      data-toggle="radio">
+                                                <b>Followers</b>
+                                            </div>
+                                            <div class="radio"><input type="radio"
+                                                                      name="filter-sort"
+                                                                      value="sort4"
+                                                                      data-toggle="radio">
+                                                <b>Engagement</b>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="header">
+                                            <h4 class="title">
+                                                <small>Profile Type</small>
+                                            </h4>
+                                        </div>
+                                        <div id="filter-scope">
+
+                                            <div class="checkbox">
+                                                <input checked="checked"
+                                                       type="checkbox"
+                                                       id="filter-private"
+                                                       data-toggle="checkbox">
+                                                <b>Private</b>
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox"
+                                                       checked="checked"
+                                                       id="filter-public"
+                                                       data-toggle="checkbox">
+                                                <b>Public</b>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="header">
+                                            <h4 class="title">
+                                                <small>Only Brands</small>
+                                            </h4>
+                                        </div>
+                                        <div id="filter-brandonly">
+
+                                            <div class="checkbox">
+                                                <input type="checkbox"
+                                                       id="filter-brand"
+                                                       data-toggle="checkbox">
+                                                <b>Only Brands</b>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="header">
+                                            <h4 class="title">
+                                                <small>Order</small>
+                                            </h4>
+                                        </div>
+                                        <div id="filter-order">
+
+                                            <div class="radio"><input checked="checked
+" type="radio" name="user_order"
+                                                                      value="asc"
+                                                                      data-toggle="radio">
+                                                <b>Ascending</b>
+                                            </div>
+                                            <div class="radio"><input type="radio" name="user_order"
+                                                                      value="desc"
+                                                                      data-toggle="radio">
+                                                <b>Descending</b>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="header">
+                                            <h4 class="title">
+                                                <small>Followers</small>
+                                            </h4>
+                                        </div>
+                                        <div id="filter-order">
+
+                                            <input type="text" id="followers-range" value="" name="range"/>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="header">
+                                            <h4 class="title">
+                                                <small>Search</small>
+                                            </h4>
+                                        </div>
+                                        <div id="filter">
+
+                                            <div class="radio"><input checked="checked
+" type="radio" name="search-cat"
+                                                                      value="user"
+                                                                      data-toggle="radio">
+                                                <b>UserName</b>
+                                            </div>
+                                            <div class="radio"><input type="radio" name="search-cat"
+                                                                      value="hash"
+                                                                      data-toggle="radio">
+                                                <b>Hashtag</b>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <input id="search-query" type="text" class="form-control"
+                                                   placeholder="query">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="footer">
+                                    <hr>
+                                    <a id="create-link" href="" class="stats" data-toggle="modal"
+                                       data-target="#listName">
+                                        <i class="fa fa-bars"></i> Create List
+                                    </a>
+                                    <a id="load-link" href="" class="stats pull-right">
+                                        <b> Load List</b>
+                                    </a>
+                                    <a id="list-link" href="" class="hidden stats">
+                                        <i class="fa fa-bars"></i> <b>List:</b> <span id="list-name"
+                                                                                      data-name="cysrsin">cysrsin</span></a>
+
+
+                                    <button id="del-list"
+                                            class="hidden pull-right btn btn-sm btn-info btn-fill pull-right"
+                                            style="margin-left: 5px;background-color: #F44336;border-color: #F44336;">
+                                        Delete
+                                    </button>
+                                    <button id="save-list"
+                                            class="hidden pull-right btn btn-sm btn-info btn-fill pull-right">
+                                        Save
+                                    </button>
+
+                                    <script type="application/javascript">
+
+
+                                        $(document).on('click', '#create-list', function (e) {
+                                            var name = $('#list-input').val();
+                                            $('#create-link').addClass("hidden");
+                                            $('#load-link').addClass("hidden");
+                                            $('#list-link,#del-list,#save-list').removeClass("hidden");
+                                            $('#list-name').data('name', name);
+                                            $('#list-name').text(name);
+                                        });
+
+                                        $(document).on('click', '#save-list', function (e) {
+                                            e.preventDefault();
+                                            search.save_list();
+
+                                        });
+                                        $(document).on('click', '#del-list', function (e) {
+                                            e.preventDefault();
+                                            search.del_list();
+
+                                        });
+                                        $(document).on('click', '#load-link', function (e) {
+                                            e.preventDefault();
+                                            search.load_list();
+
+                                        });
+                                        $(document).on('click', '.list-links', function (e) {
+                                            e.preventDefault();
+                                            search.loadProfiles($(e.toElement).data('name'));
+
+                                        });
+                                        $(document).on('click', '.card-close', function (e) {
+                                            e.preventDefault();
+                                            $('.user-card[data-userid="' + $(e.toElement).data('userid') + '"]').remove()
+
+                                        });
+
+
+                                        $(document).on('click', '.card-stat', function (e) {
+                                            e.preventDefault();
+                                            search.loadStats(e.toElement, 14);
+                                        });
+
+
+                                        $(document).on('click', '.duration', function (e) {
+                                            e.preventDefault();
+                                            {#                                            console.log(e);#}
+                                            {#                                            console.log($(e.toElement));#}
+                                            search.loadStats(e.toElement, $(e.toElement).data('duration'));
+                                        });
+
+                                    </script>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="profiles">
+                    <div class="hidden col-md-3 col-sm-6 col-xs-12" id="showmoreusers">
+                        <div class="card card-user">
+                            <div class="image" style="visibility: hidden">
+                                <img src="https://instagram.fjai1-1.fna.fbcdn.net/t51.2885-19/s150x150/16789809_427646487573759_3893827160258904064_a.jpg"
+                                     alt="...">
+                            </div>
+                            <div class="content" style="visibility: hidden">
+                                <div class="author">
+                                    <a href="#">
+                                        <img class="avatar border-gray"
+                                             src="https://instagram.fjai1-1.fna.fbcdn.net/t51.2885-19/s150x150/16789809_427646487573759_3893827160258904064_a.jpg"
+                                             alt="...">
+
+                                        <h4 class="title">Up Influencer<br>
+                                            <small>up_influencer</small>
+                                        </h4>
+                                    </a>
+                                </div>
+                                <hr>
+                                <div class="card-stats">
+                                    <h6>Followers: <span style="float: right;">0</span></h6>
+                                    <h6>Following: <span style="float: right;">0</span></h6>
+                                    <h6>Comments: <span style="float: right;">0</span></h6>
+                                    <h6>Likes: <span style="float: right;">0</span></h6>
+                                    <h6>Likes: <span style="float: right;">0</span></h6>
+                                </div>
+                            </div>
+                            <div style="position: absolute; margin: auto; top: 0; left: 0; right: 0; bottom: 0; display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; display: flex; justify-content: center; align-items: center;">
+                                {#                                <i class="add-more" class="fa fa-plus fa-4x"></i>#}
+
+                            </div>
+                            <hr>
+                            <div class="text-center">
+                                <button href="#" class="btn btn-simple"><i class="fa fa-circle "></i>
+                                    SHOW MORE
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <button style="display: block;margin: 0 auto;" id="load-more"
+                                    class="btn btn-sm btn-info btn-fill btn-cta">Load More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        {% include 'dashboard/sub_footer.html' %}
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalstats" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="card modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Title</h4>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <p>
+                                Range
+                                <b class="caret"></b>
+                            </p>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="duration" data-duration="7">7 Days</a></li>
+                            <li><a class="duration" data-duration="14">14 Daya</a></li>
+                            <li><a class="duration" data-duration="21">21 Days</a></li>
+                            <li><a class="duration" data-duration="28">28 Days</a></li>
+                            <li class="divider"></li>
+                            <li><a class="duration" data-duration="9999999">Whole</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-body" style="padding: 0px;padding-bottom: 10px;">
+                    <div class="content" style="padding-left: 0px;padding-right: 0px;">
+                        <div class="container-fluid" style="padding-right: 0px;padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <canvas id="fChart"></canvas>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <canvas id="lChart"></canvas>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <canvas id="cChart"></canvas>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--         <div class="modal-footer">
+                            <button type="button" class="btn btn-info btn-fill pull-right" data-dismiss="modal">Close</button>
+                        </div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="loadList" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="card modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">List Name</h4>
+                </div>
+                <div class="modal-body" style="padding-right: 0px;padding-left: 0px;">
+                    <div class="content">
+                        <div class="container-fluid" style="padding-right: 0px;padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive table-full-width">
+                                        <table class="table table-hover table-striped" style="margin-bottom: 20px">
+                                            <thead>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Profiles</th>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info btn-fill pull-right" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="listName" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="card modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">List Name</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form>
+                                        <div class="form-group">
+                                            <label>Only Alphabets and Numbers</label>
+                                            <input id="list-input" type="text" class="form-control"
+                                                   placeholder="list_name">
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="create-list" type="button" class="btn btn-info btn-fill pull-right"
+                            data-dismiss="modal">Create
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="application/javascript">
+
+        data = JSON.parse('{"data": [{"timestamp": "2017-09-26T11:17:01Z", "followed_by": 12568, "likes_count": 99, "comments_count": 2}, {"timestamp": "2017-10-04T18:26:25Z", "followed_by": 12532, "likes_count": 298, "comments_count": 6}]}');
+        _label = []
+        _f = []
+        _l = []
+        _c = []
+
+
+        data['data'].forEach(function (d) {
+            date = new Date(d['timestamp']);
+            _label.push($.datepicker.formatDate("dd-M-y", date));
+            _f.push(d['followed_by']);
+            _l.push(d['likes_count']);
+            _c.push(d['comments_count']);
+
+        });
+        var getMax = function (_array) {
+
+            num = Math.max.apply(Math, _array);
+            if (num.toString().length > 2) {
+                ceil = Math.floor(num / (Math.pow(10, (num.toString().length - 2 )))) + 1
+                return ceil * (Math.pow(10, (num.toString().length - 2 )));
+            }
+            else {
+
+                return (Math.floor(num / 10) + 1) * 10
+            }
+        };
+
+        var getMin = function (_array) {
+
+            num = Math.min.apply(Math, _array);
+            if (num.toString().length > 2) {
+                ceil = Math.floor(num / Math.pow(10, (num.toString().length - 2 ))) - 1
+                return ceil * Math.pow((10, (num.toString().length - 2 )));
+            }
+            else {
+                if (num < 10)
+                    return (Math.floor(num / 10)) * 10
+                else
+                    return (Math.floor(num / 10) - 1) * 10
+            }
+        }
+
+
+        var ctx1 = document.getElementById("fChart").getContext('2d');
+        var ctx2 = document.getElementById("lChart").getContext('2d')
+        var ctx3 = document.getElementById("cChart").getContext('2d')
+        var fData = {
+            labels: _label,
+            datasets: [{
+                label: "Followers",
+                backgroundColor: '#ff6384',
+                borderColor: '#ff6384',
+                data: _f,
+                fill: false,
+            }]
+        };
+        var lData = {
+            labels: _label,
+            datasets: [{
+                label: "Likes",
+                fill: false,
+                backgroundColor: '#36a2eb',
+                borderColor: '#36a2eb',
+                data: _l,
+            }]
+        };
+        var cData = {
+            labels: _label,
+            datasets: [{
+                label: "Comments",
+                fill: false,
+                backgroundColor: '#ffcd56',
+                borderColor: '#ffcd56',
+                data: _c,
+            }]
+        };
+        var fOptions = {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Followers'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    },
+                    ticks: {
+                        min: getMin(_f),
+                        max: getMax(_f),
+
+                        // forces step size to be 5 units
+                        stepSize: (getMax(_f) - getMin(_f) ) / 10
+                    }
+                }]
+            }
+        };
+        var lOptions = {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Likes'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    },
+                    ticks: {
+                        min: getMin(_l),
+                        max: getMax(_l),
+
+                        // forces step size to be 5 units
+                        stepSize: (getMax(_l) - getMin(_l)) / 10
+                    }
+                }]
+            }
+        };
+        var cOptions = {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Comments'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    },
+                    ticks: {
+                        min: getMin(_c),
+                        max: getMax(_c),
+
+                        // forces step size to be 5 units
+                        stepSize: (getMax(_c) - getMin(_c)) / 8
+                    }
+                }]
+            }
+        };
+        window.fChart = new Chart(ctx1, {
+            type: 'line',
+            data: fData,
+            options: fOptions
+        });
+        window.lChart = new Chart(ctx2, {
+            type: 'line',
+            data: lData,
+            options: lOptions
+        });
+        window.cChart = new Chart(ctx3, {
+            type: 'line',
+            data: cData,
+            options: cOptions
+        });
+
+        $(document).ready(function () {
+            profiles.append();
+        });
+
+
+        $('#filter-sort .radio, #filter-brandonly .checkbox, #filter-scope .checkbox, #filter-order .radio').click(function () {
+
+
+            setTimeout(function () {
+                $(".user-card").remove();
+                profiles.append();
+                {#                console.log('sort:' + $("input[name='filter-sort']:checked").val());#}
+                {#                console.log('private:' + $("#filter-private").prop('checked'));#}
+                {#                console.log('public:' + $("#filter-public").prop('checked'));#}
+                {#                console.log('brands:' + $("#filter-brand").prop('checked'));#}
+                {#                console.log('order:' + $("input[name='user_order']:checked").val());#}
+                {#                console.log('lastuser:' + $('.user-card').last().data('username'));#}
+                {#                console.log('lastactive:' + $('.user-card').last().data('lastactive'));#}
+                {#                console.log('followers:' + $('.user-card').last().data('followers'));#}
+                {#                console.log('engagement:' + $('.user-card').last().data('engagement'));#}
+            }, 500)
+
+        });
+
+
+        {#        $('.main-panel').scroll(function () {#}
+        {#            if (loader.isVisible($('.loader'))) {#}
+        {#                loader.show($('.loader'));#}
+        {#                profiles.append();#}
+        {#            }#}
+        {##}
+        {#        });#}
+
+        $("#load-more").click(function (e) {
+            e.preventDefault();
+            profiles.append()
+        })
+
+
+        $.widget("custom.catautocomplete", $.ui.autocomplete, {
+            //NOTE: this will process the items in order, so a category could show up multiple times
+            _renderMenu: function (ul, items) {
+                var that = this;
+                var currentCategory = "";
+                $.each(items, function (index, item) {
+                    if (item.category != currentCategory) {
+                        ul.append("<li class='ui-autocomplete-category'>" + item.category + "</li>");
+                        currentCategory = item.category;
+                    }
+
+                    that._renderItemData(ul, item);
+
+                    that._renderItem = function (ul, item) {
+                        var inner_html = "<div style='margin-top: 5px;margin-bottom: 5px;'><img style='max-width: 30px; border-radius: 100px' src='" + item.image + "'>&nbsp;<span>" + item.label + "</span></div>";
+
+                        if (item.category == 'Hashtag')
+                            var inner_html = "<div style='margin-top: 5px;margin-bottom: 5px;'><img style='max-width: 30px; border-radius: 100px' src='" + item.image + "'>&nbsp;<span>" + item.label + "</span><span style='font-weight: bold;color: #888;margin-right:10px;' class='pull-right'>#" + item.hashtag + "</span></div>";
+
+
+                        return $("<li></li>").data("item.autocomplete", item).append(inner_html).appendTo(ul);
+                    };
+
+
+                });
+            }
+        });
+        $("#search-query").catautocomplete({
+            source: function (request, response) {
+
+                $.ajax({
+                    type: "POST",
+                    url: './post/profiles/search',
+                    data: {
+                        cat: $("input[name='search-cat']:checked").val(),
+                        query: request['term'],
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function (data) {
+                        resp = [];
+                        try {
+                            data['users'].forEach(function (d) {
+                                resp.push({
+                                    label: d['username'] + ' / ' + d['fullname'],
+                                    category: 'User',
+                                    value: d['username'],
+                                    image: d['profilepicture'],
+                                });
+                            });
+                        } catch (e) {
+                        }
+                        try {
+                            data['hash'].forEach(function (d) {
+
+                                resp.push({
+                                    label: d['username'] + ' / ' + d['fullname'],
+                                    category: 'Hashtag',
+                                    value: d['username'],
+                                    image: d['profilepicture'],
+                                    hashtag: d['hashtag'],
+                                });
+                            });
+                        } catch (e) {
+                        }
+                        response(resp);
+                    }
+                });
+            },
+            select: function (event, ui) {
+                console.log(ui.item.value);
+                search.appendProfile(ui.item.value);
+            }
+        });
+
+
+    </script>
+    <script type="application/javascript">
+        $(document).ready(function () {
+            list.updateListProfiles();
+            $("#followers-range").ionRangeSlider({
+                type: "double",
+                grid: true,
+                min: 0,
+                max: 3000000,
+                from: 0,
+                to: 3000000,
+                prefix: "$",
+                onFinish: function (data) {
+                    $(".user-card").remove();
+                    profiles.append();
+                }
+            });
+            $(".dropdown-menu").on("click", "li", function (event) {
+                console.log($(event.toElement).data("name"))
+                $("#list").val($(event.toElement).data("name"));
+                $("#list-name").html($(event.toElement).data("name"));
+                $(".user-card").remove();
+                profiles.append();
+            })
+
+        })
+    </script>
+
+{% endblock %}

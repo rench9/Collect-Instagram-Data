@@ -1,0 +1,76 @@
+{% extends 'dashboard/header.html' %}
+
+
+{% block content %}
+    <div class="main-panel">
+        {% include 'dashboard/sub_header.html' %}
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Notifications</h4>
+                        <p class="category">Collection of all the notifications</p>
+
+                    </div>
+                    <div class="content">
+                        <div class="row">
+                            <div id="all_notification" class="col-md-6" style="max-height: 800px;overflow-y: scroll;">
+                                {% csrf_token %}
+                                <h5>All Notifications</h5>
+
+                                <div class="row" id="loader">
+                                    <div class="col-md-12">
+                                        <div class="loader" style="visibility: hidden"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="cat_notification" class="col-md-6">
+                                <h5>Categorised Notifications</h5>
+                                <div class="alert alert-info">
+                                    <button type="button" aria-hidden="true" class="close">×</button>
+                                    <span><b> Info - </b> This is a regular notification made with ".alert-info"</span>
+                                </div>
+                                <div class="alert alert-success">
+                                    <button type="button" aria-hidden="true" class="close">×</button>
+                                    <span><b> Success - </b> This is a regular notification made with ".alert-success"</span>
+                                </div>
+                                <div class="alert alert-warning">
+                                    <button type="button" aria-hidden="true" class="close">×</button>
+                                    <span><b> Warning - </b> This is a regular notification made with ".alert-warning"</span>
+                                </div>
+                                <div class="alert alert-danger">
+                                    <button type="button" aria-hidden="true" class="close">×</button>
+                                    <span><b> Danger - </b> This is a regular notification made with ".alert-danger"</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% include 'dashboard/sub_footer.html' %}
+
+    </div>
+    <script type="application/javascript">
+        $(window).ready(function () {
+
+            notification.load(null);
+
+        });
+        $("#all_notification").scroll(function () {
+            if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+                if (loader.isVisible($('.loader'))) {
+                    loader.show($('.loader'));
+                    notification.load(null);
+                }
+
+            }
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'dashboard/header.html' %}
+
+
+{% block content %}
+    <div class="main-panel">
+        {% include 'dashboard/sub_header.html' %}
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2 col-sm-6">
+                        <div class="db-card card">
+                            <h3 id="c_usersinfo">00000000</h3>
+                            <label>users</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-6">
+                        <div class="db-card card">
+                            <h3 id="c_brands">00000000</h3>
+                            <label>brands</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-6">
+                        <div class="db-card card">
+                            <h3 id="c_followers">00000000</h3>
+                            <label>followers</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-6">
+                        <div class="db-card card">
+                            <h3 id="c_hashtags">00000000</h3>
+                            <label>hashtags</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-6">
+                        <div class="db-card card">
+                            <h3 id="c_posts">00000000</h3>
+                            <label>posts</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-6">
+                        <div class="db-card card">
+                            <h3 id="c_timeseries">00000000</h3>
+                            <label>timeseries</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Email Statistics</h4>
+                                <p class="category">Last Campaign Performance</p>
+                            </div>
+                            <div class="content">
+
+                                <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
+
+                                <div class="footer">
+                                    <div class="legend">
+                                        <i class="fa fa-circle text-info"></i> Open
+                                        <i class="fa fa-circle text-danger"></i> Bounce
+                                        <i class="fa fa-circle text-warning"></i> Unsubscribe
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-clock-o"></i> Campaign sent 2 days ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        {% include 'dashboard/sub_footer.html' %}
+
+    </div>
+    <script type="application/javascript">
+    $(document).ready(function () {
+        demo.initChartist();
+        dashboard.loadcounts();
+    })
+    </script>
+
+{% endblock %}

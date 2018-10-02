@@ -1,0 +1,267 @@
+@media (min-width: 992px) {
+    .typo-line {
+        padding-left: 140px;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .typo-line .category {
+        transform: translateY(-50%);
+        top: 50%;
+        left: 0px;
+        position: absolute;
+    }
+}
+
+.all-icons [class*="pe-"] {
+    font-size: 40px;
+}
+
+.all-icons input {
+    border: 0;
+}
+
+.all-icons .font-icon-detail {
+    text-align: center;
+    padding: 45px 0px 30px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    margin: 15px 0;
+}
+
+.all-icons .font-icon-detail input {
+    margin: 25px auto 0;
+    width: 100%;
+    text-align: center;
+    display: block;
+    color: #aaa;
+    font-size: 13px;
+}
+
+#map {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 60px);
+}
+
+.places-buttons .btn {
+    margin-bottom: 30px
+}
+
+.sidebar .nav > li.active-pro {
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+}
+
+.sidebar .nav > li.active-pro a {
+    background: rgba(255, 255, 255, 0.14);
+    opacity: 1;
+    color: #FFFFFF;
+}
+
+.table-upgrade td:nth-child(2),
+.table-upgrade td:nth-child(3) {
+    text-align: center;
+}
+
+.hashtag.tag {
+    background-color: #dddddd;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+
+/* extra */
+
+.db-card {
+    text-align: center;
+}
+
+.db-card h3 {
+    font-weight: 400;
+    padding-top: 10px
+}
+
+#filter > div, #filter-sort > div, #filter-search > div, #filter-order > div, #filter-scope > div, #filter-brandonly > div {
+    padding-left: 30px;
+    display: inline-block;
+    margin: 10px;
+}
+
+.card-user .content {
+    min-height: 200px;
+}
+
+.card-stats {
+    margin-top: 14px
+}
+
+.ui-autocomplete {
+    list-style: none;
+    background-color: #fff;
+    margin: 0px;
+    padding-left: 0px;
+    width: 10px;
+    z-index: 100;
+    border: 1px solid #E3E3E3;
+    border-top: 0;
+    border-radius: 4px;
+}
+
+.ui-autocomplete-category {
+    font-weight: bold;
+    background-color: #f3f3f3;
+    padding-left: 10px !important;
+}
+
+.ui-menu-item {
+    padding-left: 20px;
+}
+
+.card-close {
+    background: #fff;
+    position: absolute;
+    color: #000;
+    right: 8px;
+    top: 8px;
+    border-radius: 100px;
+    font-size: 20px;
+    font-weight: bold !important;
+    cursor: pointer;
+}
+
+.card-stat {
+    background: #000;
+    position: absolute;
+    color: #fff;
+    left: 8px;
+    top: 8px;
+    border-radius: 100px;
+    font-size: 20px;
+    font-weight: bold !important;
+    cursor: pointer;
+    padding: 5px
+}
+
+#image-container {
+    margin: 40px 0;
+}
+
+#image-container img {
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: auto;
+    max-height: 85px;
+    display: block;
+    margin: 0 auto;
+
+}
+
+.post-container {
+    max-width: 940px;
+    display: block;
+    margin: 0 auto
+}
+
+.post-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-container .post-card {
+    padding: 2px;
+}
+
+#post, #followers, #following {
+    font-weight: bold;
+}
+
+.btn-cta {
+    min-width: 80px;
+    margin-top: 5px;
+}
+
+@media (min-width: 736px) {
+
+    .post-container .post-card {
+        padding: 8px;
+    }
+
+    .btn-cta {
+        min-width: 120px;
+    }
+
+    #image-container {
+        margin: 40px 0;
+    }
+
+    #image-container img {
+        height: 100%;
+        left: 0;
+        top: 0;
+        width: auto;
+        max-height: 150px;
+        display: block;
+        margin: 0 auto;
+
+    }
+}
+
+/*scroll*/
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #808e95;
+}
+
+/* loader */
+
+.loader {
+    border: 2px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 2px solid #3498db;
+    width: 40px;
+    height: 40px;
+    display: block;
+    margin: 0 auto;
+    -webkit-animation: spin 1000ms linear infinite;
+    animation: spin 1000ms linear infinite;
+    -webkit-transition: ease-in-out 300ms;
+    -moz-transition: ease-in-out 300ms;
+    -ms-transition: ease-in-out 300ms;
+    -o-transition: ease-in-out 300ms;
+    transition: ease-in-out 300ms;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* END extra */
