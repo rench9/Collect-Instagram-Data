@@ -42,7 +42,7 @@ To ensure you have the latest version, check the Compose repository release page
 
 1.Clone the GIT repo(This is private repository, will ask for password).
 
-`git clone https://rench9@bitbucket.org/rench9/webapp.git`
+`git clone https://github.com/rench9/Collect-Instagram-Data.git`
 
 2.Change directory
 
