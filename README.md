@@ -1,4 +1,4 @@
-# Installation #
+# Installation on amazon ec2 Instance #
 
 1.Update the installed packages and package cache on your machine.
 
